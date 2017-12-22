@@ -1,0 +1,25 @@
+= gRPC image:https://travis-ci.org/daggerok/grpc-spring-5.svg?branch=master["Build Status", link="https://travis-ci.org/daggerok/grpc-spring-5"]
+
+This repository contains simple gRPC server in client implementation using proto3 syntax on top of Spring 5 Framework using Spring Boot 2.
+
+.gradle
+----
+./gradlew clean assemble bootRun -b grpc-server/build.gradle
+./gradlew clean assemble bootRun -b grpc-client/build.gradle
+
+http get :8081 name=Max emo=SAD
+http get :8081 name=Max emo=HAPPY
+
+killall -9 java
+----
+
+.maven
+----
+./mvnw clean package spring-boot:run -U -DskipTests -f grpc-server/pom.xml
+./mvnw clean package spring-boot:run -U -DskipTests -f grpc-client/pom.xml
+
+http get :8081 name=Max emo=SAD
+http get :8081 name=Max emo=HAPPY
+
+killall -9 java
+----

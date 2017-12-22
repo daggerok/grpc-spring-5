@@ -1,0 +1,8 @@
+spring.output.ansi.enabled: always
+
+server:
+  port: 8081
+
+grpc:
+  address: 127.0.0.1
+  port: 8000

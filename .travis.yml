@@ -1,0 +1,49 @@
+#group: edge
+#dist: trusty
+#group: deprecated-2017Q4
+
+#sudo: required
+group: travis_lts
+
+env:
+  global:
+    TERM=dumb
+
+language: java
+jdk:
+  - openjdk8
+  - oraclejdk8
+
+install: true
+before_install:
+  - sudo apt update
+  - sudo apt install -y python-pip
+  - sudo pip install  httpie
+  - sudo usermod -aG docker $(whoami)
+
+  - source <(curl -s https://raw.githubusercontent.com/daggerok/bash-functions/master/main.bash)
+  - stop_any 5432 5672 27017 8080
+
+script:
+  - bash gradlew clean assemble -b grpc-server/build.gradle
+  - bash gradlew clean assemble -b grpc-client/build.gradle
+  - java -jar grpc-server/build/libs/*jar &
+  - java -jar grpc-client/build/libs/*jar &
+  - wait_for 8000 8080 8081
+  - http get :8081 name=Gradle emo=SAD
+  - http get :8081 name=Gradle emo=HAPPY
+  - stop_any 8000 8080 8081
+
+  - bash mvnw clean package -U -DskipTests -f grpc-server/pom.xml
+  - bash mvnw clean package -U -DskipTests -f grpc-client/pom.xml
+  - java -jar grpc-server/target/*jar &
+  - java -jar grpc-client/target/*jar &
+  - wait_for 8000 8080 8081
+  - http get :8081 name=Maven emo=SAD
+  - http get :8081 name=Maven emo=HAPPY
+  - stop_any 8000 8080 8081
+
+cache:
+  directories:
+    - $HOME/.m2
+    - $HOME/.gradle

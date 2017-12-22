@@ -1,0 +1,65 @@
+buildscript {
+  ext {
+    springBootVersion = "2.0.0.M7"
+  }
+  repositories {
+    mavenCentral()
+    maven { url "https://repo.spring.io/snapshot" }
+    maven { url "https://repo.spring.io/milestone" }
+  }
+  dependencies {
+    classpath("org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion")
+  }
+}
+
+plugins {
+  id "idea"
+  id "java"
+  id "eclipse"
+  id "com.google.protobuf" version "0.8.3"
+}
+
+apply plugin: "org.springframework.boot"
+apply plugin: "io.spring.dependency-management"
+
+group = "daggerok"
+version = "0.0.1"
+sourceCompatibility = targetCompatibility = 1.8
+
+repositories {
+  mavenCentral()
+  maven { url "https://repo.spring.io/snapshot" }
+  maven { url "https://repo.spring.io/milestone" }
+}
+
+dependencies {
+  compile("io.grpc:grpc-netty:1.8.0")
+  compile("io.grpc:grpc-protobuf:1.8.0")
+  compile("io.grpc:grpc-stub:1.8.0")
+  compile("org.springframework.boot:spring-boot-starter-webflux")
+  compile("org.springframework.boot:spring-boot-configuration-processor")
+  compileOnly("org.projectlombok:lombok")
+  testCompile("org.springframework.boot:spring-boot-starter-test")
+  testCompile("io.projectreactor:reactor-test")
+}
+
+protobuf {
+  protoc {
+    artifact = "com.google.protobuf:protoc:3.5.0"
+  }
+  plugins {
+    grpc {
+      artifact = 'io.grpc:protoc-gen-grpc-java:1.8.0'
+    }
+  }
+  generateProtoTasks {
+    all()*.plugins {
+      grpc {}
+    }
+  }
+}
+
+task wrapper(type: Wrapper) {
+  gradleVersion = "4.4.1"
+  distributionType = "ALL"
+}

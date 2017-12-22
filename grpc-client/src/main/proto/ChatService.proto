@@ -1,0 +1,34 @@
+// syntax, package, option
+syntax = "proto3";
+package daggerok;
+option java_multiple_files = true;
+
+// messages req, resp, types, tags
+
+// enum (declaring it here just before usage)
+enum Emo {
+    HAPPY = 0;
+    SAD = 1;
+}
+
+// class
+message ChatServiceRequest {
+    // field
+    string name = 1;
+    // list (repeated)
+    repeated string resepients = 2;
+    // map
+    map<string, string> properties = 3;
+    // enum
+    Emo emo = 4;
+}
+
+// class
+message ChatServiceResponse {
+     string greeting = 1;
+}
+
+// finnaly define serivce (name (input) returns (output)
+service ChatService {
+    rpc hi (ChatServiceRequest) returns (ChatServiceResponse);
+}
