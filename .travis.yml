@@ -31,8 +31,8 @@ before_install:
 - sudo pip install docker-compose httpie >/dev/null 2>&1
 
 script:
-- ./gradlew clean assemble -b grpc-server/build.gradle
-- ./gradlew clean assemble -b grpc-client/build.gradle
+- ./gradlew clean build -b grpc-server/build.gradle
+- ./gradlew clean build -b grpc-client/build.gradle
 - java -jar grpc-server/build/libs/*jar &
 - java -jar grpc-client/build/libs/*jar &
 - wait_for 8000 8080 8081
@@ -40,8 +40,8 @@ script:
 - http get :8081 name=Gradle emo=HAPPY
 - stop_any 8000 8080 8081
 
-- ./mvnw clean package -U -DskipTests -f grpc-server/pom.xml
-- ./mvnw clean package -U -DskipTests -f grpc-client/pom.xml
+- ./mvnw clean package -U -f grpc-server/pom.xml
+- ./mvnw clean package -U -f grpc-client/pom.xml
 - java -jar grpc-server/target/*jar &
 - java -jar grpc-client/target/*jar &
 - wait_for 8000 8080 8081
