@@ -1,6 +1,7 @@
 buildscript {
   ext {
-    grpcVersion = '1.8.0'
+    grpcVersion = '1.14.0'
+    protocVersion = '3.6.1'
   }
 }
 
@@ -8,13 +9,13 @@ plugins {
   id 'idea'
   id 'java'
   id 'eclipse'
-  id 'com.google.protobuf' version '0.8.3'
+  id 'com.google.protobuf' version '0.8.6'
   id 'io.franzbecker.gradle-lombok' version '1.14'
   id 'org.springframework.boot' version '2.0.4.RELEASE'
   id 'io.spring.dependency-management' version '1.0.6.RELEASE'
 }
 
-version = '0.0.3'
+version = '0.0.4'
 group = 'daggerok'
 sourceCompatibility = targetCompatibility = 1.8
 
@@ -35,11 +36,11 @@ dependencies {
 
 protobuf {
   protoc {
-    artifact = 'com.google.protobuf:protoc:3.5.0'
+    artifact = "com.google.protobuf:protoc:$protocVersion"
   }
   plugins {
     grpc {
-      artifact = 'io.grpc:protoc-gen-grpc-java:1.8.0'
+      artifact = "io.grpc:protoc-gen-grpc-java:$grpcVersion"
     }
   }
   generateProtoTasks {
