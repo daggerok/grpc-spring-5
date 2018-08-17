@@ -1,12 +1,6 @@
 buildscript {
   ext {
-    springBootVersion = '2.0.4.RELEASE'
-  }
-  repositories {
-    mavenCentral()
-  }
-  dependencies {
-    classpath("org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion")
+    grpcVersion = '1.8.0'
   }
 }
 
@@ -16,13 +10,11 @@ plugins {
   id 'eclipse'
   id 'com.google.protobuf' version '0.8.3'
   id 'io.franzbecker.gradle-lombok' version '1.14'
+  id 'org.springframework.boot' version '2.0.4.RELEASE'
 }
 
-apply plugin: 'org.springframework.boot'
-apply plugin: 'io.spring.dependency-management'
-
+version = '0.0.2'
 group = 'daggerok'
-version = '0.0.1'
 sourceCompatibility = targetCompatibility = 1.8
 
 lombok.version = '1.18.2'
@@ -32,11 +24,10 @@ repositories {
 }
 
 dependencies {
-  compile 'io.grpc:grpc-netty:1.8.0'
-  compile 'io.grpc:grpc-protobuf:1.8.0'
-  compile 'io.grpc:grpc-stub:1.8.0'
+  compile "io.grpc:grpc-netty:$grpcVersion"
+  compile "io.grpc:grpc-protobuf:$grpcVersion"
+  compile "io.grpc:grpc-stub:$grpcVersion"
   compile 'org.springframework.boot:spring-boot-starter-webflux'
-  compileOnly 'org.projectlombok:lombok'
   testCompile 'org.springframework.boot:spring-boot-starter-test'
   testCompile 'io.projectreactor:reactor-test'
 }
