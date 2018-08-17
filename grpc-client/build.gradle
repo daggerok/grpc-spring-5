@@ -11,9 +11,10 @@ plugins {
   id 'com.google.protobuf' version '0.8.3'
   id 'io.franzbecker.gradle-lombok' version '1.14'
   id 'org.springframework.boot' version '2.0.4.RELEASE'
+  id 'io.spring.dependency-management' version '1.0.6.RELEASE'
 }
 
-version = '0.0.2'
+version = '0.0.3'
 group = 'daggerok'
 sourceCompatibility = targetCompatibility = 1.8
 
@@ -45,6 +46,15 @@ protobuf {
   generateProtoTasks {
     all()*.plugins {
       grpc {}
+    }
+  }
+}
+
+sourceSets {
+  main {
+    java {
+      srcDirs "$buildDir/generated/source/proto/main/grpc"
+      srcDirs "$buildDir/generated/source/proto/main/java"
     }
   }
 }
